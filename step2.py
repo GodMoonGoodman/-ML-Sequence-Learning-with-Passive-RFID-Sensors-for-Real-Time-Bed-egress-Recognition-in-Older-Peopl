@@ -45,7 +45,7 @@ def draw_chart(file_name, save = False):
   rows = load_data(file_name)
   
   # only lying
-  for row in list(filter(lambda row: row['label'] == 3, rows)):
+  for row in list(filter(lambda row: row['label'] == LABEL_LYING, rows)):
     acceleration_of_lying['a_f'].append(row['a_f'])
     acceleration_of_lying['a_v'].append(row['a_v'])
     acceleration_of_lying['a_l'].append(row['a_l'])
