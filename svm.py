@@ -48,7 +48,7 @@ def draw_chart(file_name, save = False):
   train_points = []
   labels = []
   
-  classifier = SVC(kernel = 'poly')
+  classifier = SVC(kernel = 'linear')
 
   for row in rows:
     label = str(row['label'])
