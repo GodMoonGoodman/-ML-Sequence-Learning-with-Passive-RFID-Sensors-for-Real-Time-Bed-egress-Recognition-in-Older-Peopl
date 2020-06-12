@@ -83,7 +83,14 @@ def draw_chart(file_name, save = False):
     classifier.fit(train_points, labels)
   except ValueError:
     return
-  
+
+  predicts = classifier.predict(train_points)
+  success_count = 0
+  for i, v in enumerate(predicts):
+    if v == labels[i]:
+      success_count += 1
+
+  accuracy = round(success_count / len(predicts), 2)
 
   plt.scatter(x, y, c=labels, s=30, cmap=plt.cm.Paired, marker="x")
   ax = plt.gca()
@@ -98,10 +105,7 @@ def draw_chart(file_name, save = False):
 
   plt.xlabel('time')
   plt.ylabel('acc')
-  plt.title('data: {}'.format(file_name))
-
-  # for label in [str(label) for label in activity_labels]:
-  #   plt.plot(x[label], y[label], color_shape[label])
+  plt.title('data: {}, accuracy: {}'.format(file_name, str(accuracy * 100) + '%'))
 
   if save:
     SAVE_PATH = 'figures/result/'
