@@ -42,14 +42,16 @@ def draw_chart(file_name, save = False):
     'a_l': 1
   }
 
+  # import dataset
   rows = load_data(file_name)
   
-  # only lying
+  # collect acceleraton datas of only lying activity
   for row in list(filter(lambda row: row['label'] == 3, rows)):
     acceleration_of_lying['a_f'].append(row['a_f'])
     acceleration_of_lying['a_v'].append(row['a_v'])
     acceleration_of_lying['a_l'].append(row['a_l'])
 
+  # calculate coefficient, median of each axis acceleration
   median_acceleration_of_lying['a_f'] = median(acceleration_of_lying['a_f'])
   median_acceleration_of_lying['a_v'] = median(acceleration_of_lying['a_v'])
   median_acceleration_of_lying['a_l'] = median(acceleration_of_lying['a_l'])
@@ -71,6 +73,7 @@ def draw_chart(file_name, save = False):
       gamma = median_acceleration_of_lying['a_l']
     )
 
+    # record for before_row['acc']
     row['acc'] = acc
 
     if before_row != None:
@@ -78,7 +81,9 @@ def draw_chart(file_name, save = False):
       acc_gap = abs(row['acc'] - before_row['acc'])
 
       if time_gap > MIN_TIME_GAP:
+        # x-axis : time sequence
         x[label].append(acc_gap)
+        # y-axis : improved acceleration
         y[label].append(acc)
 
     before_row = row

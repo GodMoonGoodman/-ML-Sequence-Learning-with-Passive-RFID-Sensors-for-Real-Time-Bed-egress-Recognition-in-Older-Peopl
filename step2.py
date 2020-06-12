@@ -30,26 +30,30 @@ def draw_chart(file_name, save = False):
     '4': []
   }
 
+  # used for calculating alpha, beta, gamma coefficient
   acceleration_of_lying =  {
     'a_f': [],
     'a_v': [],
     'a_l': []
   }
 
+  # alpha, beta, gamma coefficient
   median_acceleration_of_lying = {
     'a_f': 1,
     'a_v': 1,
     'a_l': 1
   }
 
+  # import dataset
   rows = load_data(file_name)
   
-  # only lying
+  # collect acceleraton datas of only lying activity
   for row in list(filter(lambda row: row['label'] == LABEL_LYING, rows)):
     acceleration_of_lying['a_f'].append(row['a_f'])
     acceleration_of_lying['a_v'].append(row['a_v'])
     acceleration_of_lying['a_l'].append(row['a_l'])
 
+  # calculate coefficient, median of each axis acceleration
   median_acceleration_of_lying['a_f'] = median(acceleration_of_lying['a_f'])
   median_acceleration_of_lying['a_v'] = median(acceleration_of_lying['a_v'])
   median_acceleration_of_lying['a_l'] = median(acceleration_of_lying['a_l'])
@@ -69,7 +73,9 @@ def draw_chart(file_name, save = False):
       gamma = median_acceleration_of_lying['a_l']
     )
 
+    # x-axis : time sequence
     x[label].append(time)
+    # y-axis : improved acceleration
     y[label].append(acc)
 
   plt.xlabel('time')
