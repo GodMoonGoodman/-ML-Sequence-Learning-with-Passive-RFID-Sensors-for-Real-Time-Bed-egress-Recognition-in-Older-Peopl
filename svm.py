@@ -13,7 +13,7 @@ import numpy as np
 
 activity_labels = [LABEL_LYING, LABEL_SIT_ON_BED, LABEL_SIT_ON_CHAIR, LABEL_AMBULATING]
 
-def draw_chart(file_name, save = False):
+def draw_chart(file_name, save = False, show_plot = False):
   # x - axis data
   x = []
   # y - axis data
@@ -111,19 +111,27 @@ def draw_chart(file_name, save = False):
     SAVE_PATH = 'figures/result/'
     file_path = '{}{}.png'.format(SAVE_PATH, file_name)
     plt.savefig(file_path, dpi=300)
-    plt.clf()
 
     print('{} was saved'.format(file_path))
-  else:
+  if show_plot:
     plt.show()
+  plt.clf()
+  return accuracy
 
 
 if __name__ == "__main__":
   cmd = sys.argv[1]
-  if cmd == '-d':
+  if cmd == '--data':
     file_name = sys.argv[2]
-    draw_chart(file_name, save = '-s' in sys.argv)
-  elif cmd == '-a':
+    accuracy = draw_chart(file_name, save = '--save' in sys.argv, show_plot = '--show' in sys.argv)
+    print('[{}] accuracy: {}'.format(file_name, accuracy))
+  elif cmd == '--all':
     file_names = [f for f in listdir(DATA_PATH)]
+    accuracies = []
     for file_name in file_names:
-      draw_chart(file_name, save = '-s' in sys.argv)
+      accuracy = draw_chart(file_name, save = '--save' in sys.argv, show_plot = '--show' in sys.argv)
+      print('[{}] accuracy: {}'.format(file_name, accuracy))
+      if accuracy != None:
+        accuracies.append(accuracy)
+    avg_accuracy = np.mean(np.array(accuracies))
+    print('avg_accuracy: {}'.format(avg_accuracy))
